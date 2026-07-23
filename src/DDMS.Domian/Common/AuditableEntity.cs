@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DDMS.Domian.Common
 {
-    public abstract class AuditableEntity
+    public abstract class AuditableEntity:BaseEntity
     {
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
