@@ -26,7 +26,7 @@ namespace DDMS.Domian.Entities
         public string? Address { get; private set; }
         public bool IsActive { get; private set; }
 
-        public IReadOnlyCollection<Dispatch> dispatches => _dispatches.AsReadOnly();
+        public IReadOnlyCollection<Dispatch> Dispatches => _dispatches.AsReadOnly();
 
         public static Salesman Create(string name , string phone , string? address)
         {
@@ -56,9 +56,9 @@ namespace DDMS.Domian.Entities
                 throw new ArgumentNullException("phone is required");
             }
 
-            Name = name;
-            Phone = phone;
-            Address = address;
+            Name = name.Trim();
+            Phone = phone.Trim();
+            Address = address?.Trim();
 
         }
 
