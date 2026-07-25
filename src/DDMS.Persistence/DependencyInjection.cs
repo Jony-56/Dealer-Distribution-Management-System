@@ -1,4 +1,6 @@
-﻿using DDMS.Persistence.Context;
+﻿using DDMS.Application.Features.Brands.Interfaces;
+using DDMS.Persistence.Context;
+using DDMS.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,6 +18,8 @@ public static class DependencyInjection
             options.UseNpgsql(
                 configuration.GetConnectionString("DefaultConnection"));
         });
+
+        services.AddScoped<IBrandRepository,BrandRepository> ();
 
         return services;
     }
