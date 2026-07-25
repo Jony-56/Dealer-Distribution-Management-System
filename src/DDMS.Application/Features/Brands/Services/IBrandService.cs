@@ -10,7 +10,7 @@ namespace DDMS.Application.Features.Brands.Services
     public interface IBrandService
     {
         Task<List<BrandResponse>>  GetAllAsync ();
-        Task <List<BrandResponse?>> GetByIdAsync(Guid id);
+        Task <BrandResponse?> GetByIdAsync(Guid id);
         Task<Guid> CreateAsync (CreateBrandRequest request);
         Task UpdateAsync (UpdateBrandRequest request);
         Task DeleteAsync (Guid id);

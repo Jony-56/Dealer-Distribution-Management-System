@@ -1,60 +1,93 @@
-﻿using DDMS.Application.Features.Brands.DTOs;
+﻿using AutoMapper;
+using DDMS.Application.Features.Brands.DTOs;
 using DDMS.Application.Features.Brands.Interfaces;
 using DDMS.Domian.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DDMS.Application.Features.Brands.Services
 {
     public class BrandService : IBrandService
     {
         private readonly IBrandRepository _brandRepository;
+        private readonly IMapper _mapper;
 
-        public BrandService(IBrandRepository brandRepository)
+        public BrandService(
+            IBrandRepository brandRepository,
+            IMapper mapper)
         {
             _brandRepository = brandRepository;
+            _mapper = mapper;
         }
-        public async Task<Guid> CreateAsync(CreateBrandRequest request)
+
+        public async Task<List<BrandResponse>> GetAllAsync()
         {
-           if (await _brandRepository.ExistsAsync(request.Code))
+            var brands = await _brandRepository.GetAllAsync();
+
+            return _mapper.Map<List<BrandResponse>>(brands);
+        }
+
+        public async Task<BrandResponse?> GetByIdAsync(Guid id)
+        {
+            var brand = await _brandRepository.GetByIdAsync(id);
+
+            if (brand == null)
             {
-                throw new Exception("Brand Code Already Exist");
+                return null;
             }
 
-            var brand =  Brand.Create(
+            return _mapper.Map<BrandResponse>(brand);
+        }
+
+        public async Task<Guid> CreateAsync(CreateBrandRequest request)
+        {
+            var isExists = await _brandRepository.ExistsAsync(request.Code);
+
+            if (isExists)
+            {
+                throw new Exception("Brand code already exists.");
+            }
+
+            var brand = DDMS.Domian.Entities.Brand.Create(
                 request.Name,
                 request.Code,
-                request.Description
-                
-                );
-             await _brandRepository.AddAsync(brand);
+                request.Description);
+
+            await _brandRepository.AddAsync(brand);
             await _brandRepository.SaveChangesAsync();
+
             return brand.Id;
-
-
         }
 
-        public Task DeleteAsync(Guid id)
+        public async Task UpdateAsync(UpdateBrandRequest request)
         {
-            throw new NotImplementedException();
+            var brand = await _brandRepository.GetByIdAsync(request.Id);
+
+            if (brand == null)
+            {
+                throw new Exception("Brand not found.");
+            }
+
+            brand.Update(
+                request.Name,
+                request.Code,
+                request.Description);
+
+            _brandRepository.Update(brand);
+
+            await _brandRepository.SaveChangesAsync();
         }
 
-        public Task<List<BrandResponse>> GetAllAsync()
+        public async Task DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
-        }
+            var brand = await _brandRepository.GetByIdAsync(id);
 
-        public Task<List<BrandResponse?>> GetByIdAsync(Guid id)
-        {
-            throw new NotImplementedException();
-        }
+            if (brand == null)
+            {
+                throw new Exception("Brand not found.");
+            }
 
-        public Task UpdateAsync(UpdateBrandRequest request)
-        {
-            throw new NotImplementedException();
+            _brandRepository.Delete(brand);
+
+            await _brandRepository.SaveChangesAsync();
         }
     }
 }

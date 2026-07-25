@@ -7,10 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="16.2.0" />
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
-    <PackageReference Include="FluentValidation" Version="12.1.1" />
-    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="9.5.4" />
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageReference Include="FluentValidation" Version="12.0.0" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.0.0" />
     <PackageReference Include="MediatR.Contracts.CQRS" Version="1.0.0" />
   </ItemGroup>
 
@@ -21,8 +21,6 @@
   <ItemGroup>
     <Folder Include="Common\DTOs\" />
     <Folder Include="Common\Interfaces\" />
-    <Folder Include="Common\" />
-    <Folder Include="Features\Brands\Validators\" />
   </ItemGroup>
 
 </Project>
